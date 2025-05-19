@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../bulma.min.css">
+    <link rel="stylesheet" href="css/bulma.min.css">
+    <link rel="stylesheet" href="css/popup.css">
     <title>Item List</title>
 </head>
 
@@ -11,8 +12,11 @@
     <section class="section is-small">
         <button class="button is-primary is-small" id="exclude">Exclude</button>
         <button class="button is-danger is-small" id="include">Include</button>
-        <b><p id="domain"></p></b>
-        <i><p id="url"></p></i>
+        <div class="content">
+            <b><p id="domain"></p></b>
+            <span id="history-count"></span>
+            <div id="url"></p>
+        </div>
     </div>
 </body>
 

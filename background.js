@@ -1,51 +1,82 @@
+import {
+  OmniRecall,
+  OmniRecallStruct
+} from './constants/constants.js';
+
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === "complete" && tab.url) {
-        const url = new URL(tab.url);
-        const domain = url.hostname;
+  if (changeInfo.status === "complete" && tab.url) {
+    const url = new URL(tab.url);
+    const domain = url.hostname;
 
-        // Check if the domain is excluded
-        chrome.storage.local.get('excludedDomains', (result) => {
-            const excludedDomains = JSON.parse(result.excludedDomains || '{}');
-            if (excludedDomains[domain]) {
-                console.log(`Domain ${domain} is excluded. Skipping...`);
-                return;
-            }
+    // Check if the domain is excluded
+    chrome.storage.local.get([OmniRecall], (result) => {
+      const data = result[OmniRecall] || {}
+      const exclusion_list = data.exclusion_list || {}
+      const history = data.history || {};
 
-            const isRoot = (url.pathname === "/" || url.pathname === "")
+      if (exclusion_list[domain]) {
+        console.log(`Domain ${domain} is excluded. Skipping...`);
+        return;
+      }
 
-            if (isRoot) {
-                // chrome.storage.local.get(domain, (result) => {
-                // const lastVisited = result[domain];
+      const isRoot = (url.pathname === "/" || url.pathname === "")
 
-                // console.log(`Last visited for ${domain}: ${lastVisited}`);
-                // if (lastVisited && lastVisited !== tab.url) { 
-                //     chrome.tabs.update(tabId, { url: lastVisited });
-                // }
-                // });
+      if (isRoot) {
+        // this is the place if anyone want auto redirect
+        return
+      }
 
-                return
-            }
+      if (!history[domain]) {
+        history[domain] = [];
+      }
 
-            chrome.storage.local.set({ [domain]: tab.url }, () => {
-                console.log(`Saved ${tab.url} for domain ${domain}`);
-            });
-        });
-    }
+      if (!history[domain].includes(tab.url)) {
+        history[domain].push(tab.url);
+      }
+
+      chrome.storage.local.set({ 
+        [OmniRecall]:  {
+          ...data,
+          history: history
+        }}, () => {
+          console.log(`Saved ${tab.url} for domain ${domain}`);
+      });
+    });
+  }
 });
 
-
+// listiner for onpage button click
 chrome.runtime.onMessage.addListener((message, sender, _) => {
   if (message.type === "navigate_to_saved_page") {
     const hostname = message.hostname;
 
-    console.log(`Message received ${hostname}`)
+    console.log(`Message received for ${hostname}`);
 
-    chrome.storage.local.get(hostname, (result) => {
-      const savedUrl = result[hostname];
+    chrome.storage.local.get([OmniRecall], (result) => {
+      const data = result[OmniRecall];
+      const savedUrls = data?.history?.[hostname];
 
-      if (savedUrl && sender.tab?.id) {
-        chrome.tabs.update(sender.tab.id, { url: savedUrl });
-      } 
+      if (savedUrls?.length && sender.tab?.id) {
+        // TODO: Navigate to the first saved URL for this domain this will be udpated later
+        chrome.tabs.update(sender.tab.id, { url: savedUrls[savedUrls.length - 1] });
+      } else {
+        console.log(`No saved URLs found for ${hostname}`);
+      }
     });
   }
 });
+
+// structure initializer
+const initializeOmnirecall = () => {
+  chrome.storage.local.get('omnirecall', (result) => {
+    if (!result.omnirecall) {
+      chrome.storage.local.set({ omnirecall: OmniRecallStruct }, () => {
+        console.log('Omnirecall initialized in chrome.storage.local');
+      });
+    } else {
+      console.log('Omnirecall already exists in chrome.storage.local');
+    }
+  });
+}
+
+initializeOmnirecall();
