@@ -14,14 +14,16 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
             const isRoot = (url.pathname === "/" || url.pathname === "")
 
             if (isRoot) {
-                chrome.storage.local.get(domain, (result) => {
-                const lastVisited = result[domain];
+                // chrome.storage.local.get(domain, (result) => {
+                // const lastVisited = result[domain];
 
-                console.log(`Last visited for ${domain}: ${lastVisited}`);
-                if (lastVisited && lastVisited !== tab.url) { 
-                    chrome.tabs.update(tabId, { url: lastVisited });
-                }
-                });
+                // console.log(`Last visited for ${domain}: ${lastVisited}`);
+                // if (lastVisited && lastVisited !== tab.url) { 
+                //     chrome.tabs.update(tabId, { url: lastVisited });
+                // }
+                // });
+
+                return
             }
 
             chrome.storage.local.set({ [domain]: tab.url }, () => {
@@ -31,3 +33,19 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     }
 });
 
+
+chrome.runtime.onMessage.addListener((message, sender, _) => {
+  if (message.type === "navigate_to_saved_page") {
+    const hostname = message.hostname;
+
+    console.log(`Message received ${hostname}`)
+
+    chrome.storage.local.get(hostname, (result) => {
+      const savedUrl = result[hostname];
+
+      if (savedUrl && sender.tab?.id) {
+        chrome.tabs.update(sender.tab.id, { url: savedUrl });
+      } 
+    });
+  }
+});

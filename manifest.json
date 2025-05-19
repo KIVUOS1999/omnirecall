@@ -18,5 +18,18 @@
         "service_worker": "background.js",
         "type": "module"
     },
-   "permissions": ["tabs", "storage", "history"]
+    "permissions": ["tabs", "storage", "history"],
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["content_scripts/content.js"],
+            "run_at": "document_idle"
+        }
+    ],
+    "web_accessible_resources": [
+        {
+            "resources": ["icons/icon16.png"],
+            "matches": ["<all_urls>"]
+        }
+    ]
 }
