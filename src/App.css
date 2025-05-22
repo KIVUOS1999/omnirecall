@@ -1,0 +1,20 @@
+body {
+  overflow: hidden;
+}
+
+.url-list {
+  width: 100%;
+}
+
+.url-list-item {
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: normal;
+  word-break: break-word;
+}
+
+.popup-container{
+  padding: 20px;
+}

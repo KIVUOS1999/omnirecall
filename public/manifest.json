@@ -4,7 +4,7 @@
     "version": "1.0",
     "description": "this will remember everything you see",
     "action": {
-        "default_popup": "popup/popup.html",
+        "default_popup": "index.html",
         "default_icon": "icons/icon48.png",
         "default_width": 1000,
         "default_height": 600
