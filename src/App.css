@@ -18,3 +18,17 @@ body {
 .popup-container{
   padding: 20px;
 }
+
+.icon{
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+  margin-right: 5px;
+}
+
+.icon:hover{
+  background-color: rgb(255, 148, 148);;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}

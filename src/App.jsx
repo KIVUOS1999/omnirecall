@@ -69,6 +69,28 @@ function App() {
     });
   };
 
+  const deleteURL = (url) => {
+    const urlObj = new URL(url);
+    const domainName = urlObj.hostname;
+
+    chrome.storage.local.get([OmniRecall], (result) => {
+      const data = result[OmniRecall] || {};
+      const history = data.history || {};
+
+      if (history[domainName]) {
+        const updatedHistory = history[domainName].filter(item => item !== url);
+        history[domainName] = updatedHistory;
+
+        chrome.storage.local.set({
+          [OmniRecall]: { ...data, history }
+        }, () => {
+          setHistoryList(updatedHistory);
+        });
+      }
+    });
+  }
+
+
   return (
     <div className="popup-container">
       <h3>Domain: {domain}</h3>
@@ -80,7 +102,8 @@ function App() {
           <div className="url-list">
             {historyList.map((url, index) => (
               <div className='url-list-item'>
-                <a href={url} target="_blank" key={index} className="url-list-item">{index + 1}: {url}</a>
+                <span class="icon" onClick={()=>{deleteURL(url)}}>🗑️</span>
+                <a href={url} target="_blank" key={index} className="url-list-item">{url}</a>
               </div>
             ))}
           </div>
