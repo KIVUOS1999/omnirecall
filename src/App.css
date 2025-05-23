@@ -27,8 +27,28 @@ body {
 }
 
 .icon:hover{
-  background-color: rgb(255, 148, 148);;
+  background-color: rgb(255, 148, 148);
   border-radius: 10px;
   transition: all 0.3s ease;
   cursor: pointer;
+}
+
+.header {
+  display: flex;
+}
+
+.header-btn{
+  width: 20px;
+  height: 20px;
+}
+
+.header-btn:hover{
+  border-radius: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.header-title{
+  flex: 2;
 }

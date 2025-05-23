@@ -1,0 +1,29 @@
+.settings-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.settings-value {
+    padding: 10px;
+}
+
+.settings-value-action {
+    padding: 4px;
+    border: 2px solid rgb(255, 148, 148);
+    border-radius: 5px;
+    width: 30px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.settings-value-action:hover {
+    background-color: rgb(255, 148, 148);
+    color: black;
+    transition: all 0.3s ease;
+}
+
+.settings-name{
+    flex: 2;
+}
