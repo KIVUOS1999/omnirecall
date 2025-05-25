@@ -16,6 +16,7 @@
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
+    user-select: none;
 }
 
 .settings-value-action:hover {
@@ -26,4 +27,8 @@
 
 .settings-name{
     flex: 2;
+}
+
+.settings-back{
+    cursor: pointer;
 }

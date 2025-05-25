@@ -11,7 +11,7 @@ function App() {
   return (
     <div className="popup-container">
       {settings? (
-        <Settings />
+        <Settings setSettings={setSettings}/>
       ) : (
         <History setSettings={setSettings}/>
       )}

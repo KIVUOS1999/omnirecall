@@ -5,6 +5,7 @@
         user : {}
         settings : {
             "auto_redirect": false,
+            "history_limit": 10
         }
         exclusion_list : {
             "domain.com": true

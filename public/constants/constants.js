@@ -6,7 +6,9 @@ const History = "history"
 
 const OmniRecallStruct = {
   user: {},
-  settings: {},
+  settings: {
+    history_limit: 10 // Default history limit
+  },
   exclusion_list: {},
   history: {}
 }
