@@ -110,12 +110,17 @@ function History({ setSettings }) {
                         <hr />
 
                         <div className="url-list">
-                            {historyList.map((url, index) => (
-                                <div className='url-list-item'>
-                                    <span class="icon" onClick={() => { deleteURL(url) }}>🗑️</span>
-                                    <a href={url} target="_blank" key={index} className="url-list-item">{url}</a>
+                            {historyList.map((url, index) => {
+                                const parsedUrl = new URL(url);
+                                const displayUrl = parsedUrl.pathname + parsedUrl.search;
+
+                                return (
+                                <div className="url-list-item" key={index}>
+                                    <span className="icon" onClick={() => deleteURL(url)}>🗑️</span>
+                                    <a href={url} target="_blank" rel="noopener noreferrer" className="url-list-item">{displayUrl}</a>
                                 </div>
-                            ))}
+                                );
+                            })}
                         </div>
 
                         <hr />
