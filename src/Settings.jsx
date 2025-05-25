@@ -26,6 +26,8 @@ function Settings( {setSettings} ) {
 
             chrome.storage.local.set({ omnirecall: data }, () => {
                 console.log('Settings updated:', data.settings);
+
+                homepage();
             });
         })
     }
